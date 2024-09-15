@@ -206,9 +206,6 @@ public class Location {
 
 	public virtual int? Id { get; set; }
 
-	[JsonPropertyName("_type")]
-	public virtual string? Type { get; set; }
-
 	public virtual string? BSSID { get; set; }
 
 	public virtual string? SSID { get; set; }
