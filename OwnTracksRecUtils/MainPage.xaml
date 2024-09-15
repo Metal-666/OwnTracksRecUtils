@@ -24,11 +24,13 @@
 
 			<Button
 				Text="Merge .rec files"
-				Clicked="OnMergeRecFiles">
+				Clicked="OnMergeRecFiles"
+				Margin="5">
 			</Button>
 			<Button
 				Text=".rec to .csv"
-				Clicked="OnRecToCsv">
+				Clicked="OnRecToCsv"
+				Margin="5">
 			</Button>
 		</HorizontalStackLayout>
 		<Label
