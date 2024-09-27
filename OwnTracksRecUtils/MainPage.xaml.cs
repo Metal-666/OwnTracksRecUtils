@@ -202,6 +202,7 @@ public partial class MainPage : ContentPage {
 
 }
 
+// Based on https://github.com/Metal-666/Vaultracks/blob/main/Vaultracks/Location.cs
 public class Location {
 
 	public virtual int? Id { get; set; }
@@ -231,11 +232,37 @@ public class Location {
 	[JsonPropertyName("created_at")]
 	public virtual long? CreatedAt { get; set; }
 
-	[JsonPropertyName("lat")]
+	[JsonPropertyName("lat"), Ignore]
 	public virtual decimal? Latitude { get; set; }
 
-	[JsonPropertyName("lon")]
+	[JsonIgnore]
+	public virtual string? LatitudeString {
+
+		get =>
+			Latitude?.ToString();
+		set =>
+			Latitude =
+				value == null ?
+					null :
+					decimal.Parse(value);
+
+	}
+
+	[JsonPropertyName("lon"), Ignore]
 	public virtual decimal? Longitude { get; set; }
+
+	[JsonIgnore]
+	public virtual string? LongitudeString {
+
+		get =>
+			Longitude?.ToString();
+		set =>
+			Longitude =
+				value == null ?
+					null :
+					decimal.Parse(value);
+
+	}
 
 	[JsonPropertyName("rad")]
 	public virtual long? RadiusAroundRegion { get; set; }
@@ -270,34 +297,39 @@ public class Location {
 	[JsonPropertyName("tag")]
 	public virtual string? Tag { get; set; }
 
-	public virtual string? InRegions => SubObjectAsString("inregions");
+	[JsonPropertyName("inregions"), Ignore]
+	public virtual List<string>? InRegions { get; set; }
 
-	public virtual string? InRegionIds => SubObjectAsString("inrids");
+	[JsonIgnore]
+	public virtual string? InRegionsString {
 
-	[JsonExtensionData, Ignore]
-	public virtual Dictionary<string, JsonElement>? ExtensionData { get; set; }
+		get =>
+			InRegions == null ?
+				null :
+				JsonSerializer.Serialize(InRegions);
+		set =>
+			InRegions =
+				value == null ?
+					null :
+					JsonSerializer.Deserialize<List<string>>(value);
 
-	public virtual string? SubObjectAsString(string key) {
+	}
 
-		if(ExtensionData == null) {
+	[JsonPropertyName("inrids"), Ignore]
+	public virtual List<string>? InRegionIds { get; set; }
 
-			return null;
+	[JsonIgnore]
+	public virtual string? InRegionIdsString {
 
-		}
-
-		if(!ExtensionData.TryGetValue(key, out JsonElement element)) {
-
-			return null;
-
-		}
-
-		if(element.ValueKind == JsonValueKind.Null) {
-
-			return null;
-
-		}
-
-		return element.GetRawText();
+		get =>
+			InRegionIds == null ?
+				null :
+				JsonSerializer.Serialize(InRegionIds);
+		set =>
+			InRegionIds =
+				value == null ?
+					null :
+					JsonSerializer.Deserialize<List<string>>(value);
 
 	}
 
